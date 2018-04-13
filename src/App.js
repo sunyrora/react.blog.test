@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import { BrowserRouter } from 'react-router-dom';
 import { HashRouter as Router } from 'react-router-dom';
 // import { Router } from 'react-router';
-import createHistory from "history/createHashHistory"
+// import createHistory from "history/createHashHistory"
 import Header from './components/Header';
 import Main from './components/Main';
 // import Game from './components/Game';
@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     console.log("process.env.PUBLIC_URL: ", process.env.PUBLIC_URL);
     return (
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <div>
           <Header />
           <Main />
