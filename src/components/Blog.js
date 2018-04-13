@@ -2,6 +2,11 @@ import React from 'react';
 import './styles/Blog.css';
 import marked from 'marked';
 
+marked.setOptions({
+  gfm: true,
+  breaks: true
+})
+
 class Blog extends React.Component {
   constructor(props) {
     super(props);
