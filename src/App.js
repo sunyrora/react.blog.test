@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-// import { BrowserRouter } from 'react-router-dom';
 import { HashRouter as Router } from 'react-router-dom';
-// import { Router } from 'react-router';
-// import createHistory from "history/createHashHistory"
 import Header from './components/Header';
 import Main from './components/Main';
-// import Game from './components/Game';
+import { ApolloProvider } from 'react-apollo';
+import { githubClient } from './config/apollo_client';
+// import { fetchPostList } from './queries/fetchData';
 
-// const history = createHistory();
+// githubClient.query({
+//   query: fetchPostList
+// })
+// .then(result => console.log("query result: ", result));
 
 class App extends Component {
 
   render() {
-    console.log("process.env.PUBLIC_URL: ", process.env.PUBLIC_URL);
     return (
-      <Router>
-        <div>
-          <Header />
-          <Main />
-        </div>
-      </Router>
+      <ApolloProvider client={githubClient}>
+        <Router>
+          <div>
+            <Header />
+            <Main />
+          </div>
+        </Router>
+      </ApolloProvider>
     );
   }
 }
