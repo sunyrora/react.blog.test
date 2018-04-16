@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { CLIENT_ID, STATUS } from '../config/github';
 
+const REDIRECT_URI = 'http://localhost:3000';
 
-const Header = () => {
+const Header = ({ status }) => {
+  const loginButton = (
+    <a
+      href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+    >
+      Login
+    </a>);
+
   return (
     <header>
       <nav>
@@ -13,6 +22,9 @@ const Header = () => {
           <li><Link to='/Blog'>Blog</Link></li>
         </ul>
       </nav>
+
+      { status !== STATUS.FINISHED_LOADING ? loginButton : (<div>logged In</div>) }
+      
     </header>
   );
 };
