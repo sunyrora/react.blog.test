@@ -6,13 +6,13 @@ import Blog from './Blog';
 import PostList from './PostList';
 import PostView from './PostView';
 
-const Main = ({ status }) => {
+const Main = () => {
   return (
     <main>
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route path='/game' component={Game}/>
-        <Route path='/posts' component={(props) => <PostList {...props} status={status} />}/>
+        <Route path='/posts' component={(props) => <PostList {...props} />}/>
         <Route path='/post/:title' component={PostView}/>
         <Route path='/Blog' component={Blog}/>
       </Switch>
