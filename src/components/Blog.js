@@ -38,7 +38,7 @@ class Blog extends React.Component {
       <div className="container">
         <textarea
           className="editor"
-          placeholder='Write down your message'
+          placeholder='Write down your markdown'
           name='text'
           value={this.state.text}
           onChange={(e) => this.handleChange(e) }
