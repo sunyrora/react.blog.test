@@ -24,7 +24,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "npm run build && gh-pages -d build"
+    "bdeploy": "npm run build && npm run deploy",
+    "deploy": "gh-pages -d build"
   },
   "homepage": "https://sunyrora.github.io/react.blog.test/",
   "devDependencies": {
