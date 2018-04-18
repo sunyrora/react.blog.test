@@ -13,8 +13,8 @@ const Main = () => {
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route path='/game' component={Game}/>
-        <Route path='/posts' component={(props) => <PostList {...props} />}/>
-        <Route path='/post/:title' component={PostView}/>
+        <Route path='/posts' render={(props) => <PostList {...props} />}/>
+        <Route path='/post/:title' render={props => <PostView {...props} />}/>
         <Route path='/Blog' component={Blog}/>
         <Route path='/gitAuthCallback' component={GitAuthCallback} />
       </Switch>

@@ -13,6 +13,7 @@ class PostView extends Component {
     return (
       <Query
         query={ fetchPost }
+        variables={{ expression: `gh-pages:_posts/${this.props.match.params.title}` }}
       >
         {
           ({ loading, error, data }) => {
