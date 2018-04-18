@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { githubClient } from './config/apollo_client';
 import AppMain from './containers/AppMain';
 import storage from './utils/storage';
-import { HashRouter as Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import GitAuthCallback from './components/GitAuthCallback';
 
-import { GIT_AUTH_URI } from './config/github';
+import { GIT_AUTH_URI, GATE_KEEPER } from './config/github';
 
 
 class App extends Component {
@@ -20,11 +19,23 @@ class App extends Component {
   }
 
   init() {
-    // storage.remove('gitToken');
     const token = storage.get('gitToken');
-    // console.log('App: token: ', token);
 
-    if(token && token !== 'undefined') {
+    if(!token || token === 'undefined') {
+      const code =
+      window.location.href.match(/\?code=(.*)/) &&
+      window.location.href.match(/\?code=(.*)/)[1];
+      if (code) {
+        fetch(`${GATE_KEEPER}/authenticate/${code}`)
+          .then(response => response.json())
+          .then(({ token }) => {
+            storage.set('gitToken', token);
+            window.location.replace('/');
+          });
+      } else {
+        window.open(GIT_AUTH_URI, '_self');
+      }
+    } else {
       this.setState({
         token,
         apolloClient: githubClient.getApolloClient(token),
@@ -33,7 +44,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log('componentDidMount');
     this.init();
   }
 
@@ -41,25 +51,15 @@ class App extends Component {
     // storage.remove('gitToken');
   }
 
-  setApolloClient(token) {
-    this.setState({ apolloClient: githubClient.getApolloClient(token) });
-  }
-
   render() {
-    // console.log("this.apolloClient: ", this.state.apolloClient);
     const LoginButton = (
-      <Router>
-        <div>
-          <button
-            onClick={() => {
-              window.open(GIT_AUTH_URI, '_self');
-            }}
-          >Login
-          </button>
-          <Route path='/gitAuthCallback' component={GitAuthCallback} />
-        </div>
-      </Router>
-      );
+      <button
+        onClick={() => {
+          window.open(GIT_AUTH_URI, '_self');
+        }}
+      >Authorize App
+      </button>
+    );
 
 
 
@@ -70,7 +70,7 @@ class App extends Component {
     )
     : (
       <div>
-        {LoginButton}
+        Loading...
       </div>
     );
   }
