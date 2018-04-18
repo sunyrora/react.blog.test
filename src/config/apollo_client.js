@@ -9,6 +9,9 @@ import { ApolloLink } from 'apollo-link';
 export function getApolloClient(token) {
   const httpLink = new HttpLink({
     uri: 'https://api.github.com/graphql',
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
     credentials: 'same-origin'
   });
   
@@ -25,7 +28,6 @@ export function getApolloClient(token) {
   });
   
   const link = ApolloLink.from([
-    authMiddleware,
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
         graphQLErrors.map(({ message, locations, path }) =>
