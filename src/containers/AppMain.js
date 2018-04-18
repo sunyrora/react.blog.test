@@ -1,23 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
+// import PropTypes from 'prop-types';
 import { HashRouter as Router } from 'react-router-dom';
 import Header from '../components/Header';
 import Main from '../components/Main';
 
-const AppMain = ({apolloClient}) => (
-  <ApolloProvider client={apolloClient}>
+const AppMain = () => {
+  return (
     <Router>
       <div>
         <Header />
         <Main />
       </div>
     </Router>
-  </ApolloProvider>
-);
+  );
+}
 
-AppMain.propTypes = {
-  apolloClient: PropTypes.object.isRequired
-};
+// AppMain.propTypes = {
+//   apolloClient: PropTypes.object
+// };
 
 export default AppMain;

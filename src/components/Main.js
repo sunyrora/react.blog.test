@@ -5,6 +5,7 @@ import Game from './Game';
 import Blog from './Blog';
 import PostList from './PostList';
 import PostView from './PostView';
+import GitAuthCallback from './GitAuthCallback';
 
 const Main = () => {
   return (
@@ -15,6 +16,7 @@ const Main = () => {
         <Route path='/posts' component={(props) => <PostList {...props} />}/>
         <Route path='/post/:title' component={PostView}/>
         <Route path='/Blog' component={Blog}/>
+        <Route path='/gitAuthCallback' component={GitAuthCallback} />
       </Switch>
     </main>
   );

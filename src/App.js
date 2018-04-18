@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { getApolloClient } from './config/apollo_client';
+import { githubClient } from './config/apollo_client';
 import AppMain from './containers/AppMain';
-import { Redirect } from 'react-router-dom';
 import storage from './utils/storage';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
+import GitAuthCallback from './components/GitAuthCallback';
 
-import { GIT_AUTH_URI, GATE_KEEPER } from './config/github';
+import { GIT_AUTH_URI } from './config/github';
 
 
 class App extends Component {
@@ -13,23 +15,25 @@ class App extends Component {
 
     this.state = {
       gitToken: undefined,
+      apolloClient: undefined,
     }
-
-    this.apolloClient = undefined;
   }
 
   init() {
+    // storage.remove('gitToken');
     const token = storage.get('gitToken');
+    // console.log('App: token: ', token);
 
-    if(!token) {
-      return this.gitAuth();
+    if(token && token !== 'undefined') {
+      this.setState({
+        token,
+        apolloClient: githubClient.getApolloClient(token),
+      });
     }
-
-    this.setApolloClient(token);
-    this.setState({token});
   }
 
   componentDidMount() {
+    // console.log('componentDidMount');
     this.init();
   }
 
@@ -37,41 +41,38 @@ class App extends Component {
     // storage.remove('gitToken');
   }
 
-  gitAuth() {
-    const code =
-      window.location.href.match(/\?code=(.*)/) &&
-      window.location.href.match(/\?code=(.*)/)[1];
-    if (code) {
-      fetch(`${GATE_KEEPER}/authenticate/${code}`)
-        .then(response => response.json())
-        .then(({ token }) => {
-          this.setApolloClient(token);
-          storage.set('gitToken', token);
-          this.setState({ token });
-        });
-    }
-  }
-
   setApolloClient(token) {
-    this.apolloClient = getApolloClient(token);
-  }
-
-  createApp() {
-    return (
-      <AppMain apolloClient={this.apolloClient} />
-    );
+    this.setState({ apolloClient: githubClient.getApolloClient(token) });
   }
 
   render() {
+    // console.log("this.apolloClient: ", this.state.apolloClient);
     const LoginButton = (
-      <a
-        href={GIT_AUTH_URI}
-      >
-        Login
-      </a>
-    );
+      <Router>
+        <div>
+          <button
+            onClick={() => {
+              window.open(GIT_AUTH_URI, '_self');
+            }}
+          >Login
+          </button>
+          <Route path='/gitAuthCallback' component={GitAuthCallback} />
+        </div>
+      </Router>
+      );
 
-    return this.apolloClient ? this.createApp() : LoginButton;
+
+
+    return this.state.apolloClient ? (
+      <ApolloProvider client={this.state.apolloClient}>
+        <AppMain />
+      </ApolloProvider>
+    )
+    : (
+      <div>
+        {LoginButton}
+      </div>
+    );
   }
 }
 
