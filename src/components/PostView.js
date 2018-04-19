@@ -25,7 +25,11 @@ class PostView extends Component {
             if(loading) return <p>Loading...</p>;
             if(error) return <p>error :(</p>;
 
-            const converted = this.createMarkup(marked(data.repository.object.text));
+            const reg = /---\n(.*\n)*---\n*/;
+            const text = data.repository.object.text;
+            const newText = text.replace(reg, "");
+
+            const converted = this.createMarkup(marked(newText));
 
             return <div dangerouslySetInnerHTML={converted} />;
           }
