@@ -30,7 +30,8 @@ class App extends Component {
           .then(response => response.json())
           .then(({ token }) => {
             storage.set('gitToken', token);
-            window.location.replace('/');
+            const redirectURL = (process.env.PUBLIC_URL === '') ? '/' : process.env.PUBLIC_URL;
+            window.location.replace(redirectURL);
           });
       } else {
         window.open(GIT_AUTH_URI, '_self');
@@ -48,7 +49,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    // storage.remove('gitToken');
+    storage.remove('gitToken');
   }
 
   render() {
