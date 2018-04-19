@@ -20,11 +20,16 @@ const PostList = () => (
         if(loading) return (<p>Loading...</p>);
         if(error) return (<p>Error :(</p>);
         
-        const posts = data.repository.object.entries.map(({ name }) => (
-          <Link to={`post/${name}`} key={ name }>
-            <li>{name}</li>
-          </Link>
-        ));
+        const posts = data.repository.object.entries.map(({ name }) => {
+          const reg = /[^\d{4}\-\d{2}\-\d{2}\-].*(?=.md)/;
+          const newName = name.match(reg);
+
+          return (
+            <Link to={`post/${name}`} key={ name }>
+              <li>{newName}</li>
+            </Link>
+          );
+        });
 
         return (<ul>{posts}</ul>);
       }
