@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 export const fetchPostList = gql`
-{
-  repository(name: "sunyrora.github.io", owner: "sunyrora"){     
-    object(expression: "gh-pages:_posts") {
+query PostListQuery($expression: String!, $repositoryName: String!, $owner: String!) {
+  repository(name: $repositoryName, owner: $owner) {
+    object(expression: $expression) {
       ... on Tree{
         entries{
           name
@@ -13,12 +13,13 @@ export const fetchPostList = gql`
       }
     }
   }
+
 }
 `;
 
 export const fetchPost = gql`
-  query PostQuery($expression: String!) {
-    repository(name: "sunyrora.github.io", owner: "sunyrora"){
+  query PostQuery($expression: String!, $repositoryName: String!, $owner: String!) {
+    repository(name: $repositoryName, owner: $owner){
       object(expression: $expression) {
         ... on Blob {
           text

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { fetchPost } from '../queries/fetchData';
 import { Query } from 'react-apollo';
 import marked from 'marked';
+import { REPO_NAME, REPO_OWNER, BRANCH, TARGET_FOLDER } from '../config/github';
 
 class PostView extends Component {
   createMarkup(val) {
@@ -13,7 +14,11 @@ class PostView extends Component {
     return (
       <Query
         query={ fetchPost }
-        variables={{ expression: `gh-pages:_posts/${this.props.match.params.title}` }}
+        variables={{ 
+          expression: `${BRANCH}:${TARGET_FOLDER}/${this.props.match.params.title}`,
+          repositoryName: REPO_NAME,
+          owner: REPO_OWNER
+        }}
       >
         {
           ({ loading, error, data }) => {

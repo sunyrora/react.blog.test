@@ -2,11 +2,18 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { fetchPostList } from '../queries/fetchData';
 import { Link } from 'react-router-dom';
+import { REPO_NAME, REPO_OWNER, BRANCH, TARGET_FOLDER } from '../config/github';
 
 
 const PostList = () => (
   <Query
     query={ fetchPostList }
+    variables={{
+      expression: `${BRANCH}:${TARGET_FOLDER}`,
+      repositoryName: REPO_NAME,
+      owner: REPO_OWNER
+    }
+    }
   >
     {
       ({loading, error, data}) => {
