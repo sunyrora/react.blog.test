@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+}
+
+.container > * {
+  margin: 10px;
+}
+
+.editor {
+  width: 200px;
+  height: 300px;
+  outline: none;
+  box-sizing:border-box;
+  font-size: 1em;
+  border-radius: 5px;
+  padding: 10px;
+  /* overflow: auto; */
+  resize: none;
+  border: 1px solid #ffcc99;
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+}
+
+.review {
+  border: 1px solid #eeeeee;
+  width: 200px;
+  height: 300px;
+}
