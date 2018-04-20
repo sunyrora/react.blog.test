@@ -20,13 +20,20 @@ const PostList = () => (
         if(loading) return (<p>Loading...</p>);
         if(error) return (<p>Error :(</p>);
         
-        const posts = data.repository.object.entries.map(({ name }) => {
-          const reg = /[^\d{4}\-\d{2}\-\d{2}\-].*(?=.md|html)/;
-          const newName = name.match(reg);
-
+        const posts = data.repository.object.entries.map(({ name, object }) => {
+          const regTitle = /[^\d{4}\-\d{2}\-\d{2}\-].*(?=.md|html)/;
+          const title = name.match(regTitle);
+          
+          const regText = /---\n(.*\n)*---\n*/;
+          const text = object.text.replace(regText, "");
           return (
             <Link to={`post/${name}`} key={ name }>
-              <li>{newName}</li>
+              <li>
+                <div>
+                  <h2>{ title }</h2>
+                  <div>{ text.slice(0, 50) }...</div>
+                </div>
+              </li>
             </Link>
           );
         });

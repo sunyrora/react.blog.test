@@ -7,8 +7,11 @@ query PostListQuery($expression: String!, $repositoryName: String!, $owner: Stri
       ... on Tree{
         entries{
           name
-          type
-          mode
+          object {
+            ... on Blob {
+              text
+            }
+          }
         }
       }
     }
